@@ -1,7 +1,7 @@
 functions-framework==3.*
-pandas
-yt_dlp
-google-cloud_bigquery
-pandas-gbq
-google-cloud-storage
-opencv-python
+yt_dlp==2024.12.23
+pandas==2.1.0
+pandas_gbq==0.23.2
+google-cloud-storage==2.19.0
+opencv-python==4.8.0.76
+google-cloud-bigquery==3.26.0
