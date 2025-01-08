@@ -9,35 +9,14 @@ from google.colab import userdata
 from huggingface_hub import HfApi
 from huggingface_hub import login
 from datasets import load_dataset
+from datasets import concatenate_datasets
 from tqdm import tqdm
 
 
-def fetch_existing_video_labels():
-      dataset = load_dataset("eybro/images", split="train")
+def fetch_existing_video_labels(dataset):
       existing_labels = set(dataset["label"])
       return existing_labels
 
-def fetch_images_from_gcs(bucket):
-    data = []
-
-    for blob in bucket.list_blobs(prefix="images/"):
-        if blob.name.endswith(('.jpg', '.png')):
-            parts = blob.name.split('/')
-            video_name = parts[1]
-
-            filename = parts[2]
-            timestamp = int(filename.split('_')[1].split('.')[0])
-
-            image_data = blob.download_as_bytes()
-            image = Image.open(BytesIO(image_data)).convert("RGB")
-
-            data.append({
-                'image': image,
-                'label': video_name,
-                'timestamp': timestamp
-            })
-
-    return data
 
 def fetch_images_from_gcs(bucket, existing_labels):
     data = []
@@ -68,15 +47,14 @@ def fetch_images_from_gcs(bucket, existing_labels):
     return data
 
 
-def push_to_hub(data_batch):
+def create_new_dataset(data_batch):
     dataset = Dataset.from_dict({
         'image': [item['image'] for item in data_batch],
         'label': [item['label'] for item in data_batch],
         'timestamp': [item['timestamp'] for item in data_batch],
     })
-    dataset.push_to_hub("eybro/images")
-
-push_to_hub(data)
+    return dataset
+      
 
 def main():
     token = os.environ["hf_token"]
@@ -85,10 +63,13 @@ def main():
     bucket_name = "test_video_images"
     bucket = client.bucket(bucket_name)
 
-    existing_labels = fetch_existing_video_labels()
+    existing_labels = fetch_existing_video_labels(dataset)
 
     data = fetch_images_from_gcs(bucket, existing_labels)
-    push_to_hub(data)
+
+    new_dataset = create_new_dataset(data)
+    merged_dataset = concatenate_datasets([dataset,new_dataset])
+    merged_dataset.push_to_hub("eybro/images")
 
 
 @functions_framework.cloud_event
