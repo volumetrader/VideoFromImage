@@ -64,6 +64,13 @@ The [Gradio App](https://huggingface.co/spaces/eybro/image_video_timestamp) util
 4. The image's nearest neighbour is found by searching for the pre encoded image with the smallest euclidean distance to the encoded uplaoded image.
 5. The video title, timestamp and direct url is presented to the user.
 
+# Results
+
+The model performs well on our test split as can be seen in the prediction image below:
+![Performance](report_images/autoencoder_result)
+
+The model also performs well on Youtube screenshots with low noise, it does not perform well if the images contains added text. This is expected since the model is not trained on any data with noise. 
+
 # How to Run
 To use the service, simply navigate to [this huggingface space](https://huggingface.co/spaces/eybro/image_video_timestamp)
 
