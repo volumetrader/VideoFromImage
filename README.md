@@ -37,7 +37,21 @@ The prediction system uses the data collected by the Data Collection part and pe
 The Gradio app allows the user to upload their own image which is then encoded by the model and the closest neighbouring image is therafter found and the link to the corresponding Youtube video with a timestamp is presented to the user. 
 
 # Explanation of Parts
-## 3. Inference through Gradio User Interface
+### 1. Training Pipeline
+
+The training start with loading the dataset from hugggingface and splitting it into
+train(80%) and test(20%) datasets. The images are preprocessed by changing the resolution
+to 64x64, making it a numpy array and normalizing its values.
+
+Then the convolutional autoencoder is constructed based on [this example](https://keras.io/examples/vision/autoencoder/)\
+It consists of two parts: the encoder which deconstructs the image to a smaller dimension and the decoder which attempts 
+to reconstruct the image from the smaller dimension representation.
+We then extract the layer which contains this representation for all images.
+
+To find the video and timestamp of an unseen image we do the same process and search for the 
+nearest neighbour by Euclidean distance among our processed images. With that image we can get the video and 
+timestamp from our dataset.
+### 2. Inference through Gradio User Interface
 ![Gradio App](report_images/Gradio.png)
 
 The [Gradio App](https://huggingface.co/spaces/eybro/image_video_timestamp) utilizes the autoencoder model, encoded images as well as the dataset to allow users to find a Youtube video with a timestamp corresponding to their uploaded image. It can therefore be thought of as the projects inference pipeline. Here is how it works step-by-step:
@@ -48,3 +62,12 @@ The [Gradio App](https://huggingface.co/spaces/eybro/image_video_timestamp) util
 5. The video title, timestamp and direct url is presented to the user.
 
 # How to Run
+To use the service, simply navigate to [this huggingface space](https://huggingface.co/spaces/eybro/image_video_timestamp)
+
+To run this project yourself:
+1. The 3 functions in the cloud_functions folder have to be deployed to GCP
+2. A storage_bucket have to be created which the images can be saved to 
+3. The colab notebook for training the model has to be run
+4. The huggingface space cloned for the inference.
+
+In all of these steps credentials and specific varable names has to be swaped out.
