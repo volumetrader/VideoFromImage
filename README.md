@@ -36,6 +36,15 @@ The prediction system uses the data collected by the Data Collection part and pe
 
 The Gradio app allows the user to upload their own image which is then encoded by the model and the closest neighbouring image is therafter found and the link to the corresponding Youtube video with a timestamp is presented to the user. 
 
+# Tools
+These are the main tools leveraged in this system:
+
+* **Gradio**: Allows the user to interact with the model and therefore acheive the end goal of finding the correct youtube video.
+* **Google Colab**: Hosting service for model on-demand training.
+* **Hugging Face**: Hugging Face is used for hosting the model, dataset and interface used for the service/inference.
+* **Google Cloud Platform**: Bucket storage for images and cloud functions and scheduling for data collection pipeline.
+* **Keras**: Library used to build our convolutional autoencoder model.
+  
 # Explanation of Parts
 ### 1. Feature Pipeline
 The Data collection architecture described in the section above is scheduled to run daily and add images as new videos are added to the playlists.
@@ -67,7 +76,7 @@ The [Gradio App](https://huggingface.co/spaces/eybro/image_video_timestamp) util
 # Results
 
 The model performs well on our test split as can be seen in the prediction image below:
-![Performance](report_images/autoencoder_result)
+![Performance](report_images/autoencoder_result.png)
 
 The model also performs well on Youtube screenshots with low noise, it does not perform well if the images contains added text. This is expected since the model is not trained on any data with noise. 
 
