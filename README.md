@@ -2,13 +2,14 @@
 This project is a complete ML system designed to help users identify the specific YouTube video and timestamp that correspond to their uploaded image. 
 Our data consists of images scraped of various vides from Gordon Ramsay TV shows and the service is accessible [here.](https://huggingface.co/spaces/eybro/image_video_timestamp)
 
+This project was done as the final project of the course **ID2223 - Scalable Machine Learning & Deep learning** at KTH.
 # Overview
 
 The system can be splitted into two parts:
 * Data collection: Scheduled scraping of Youtube videos to extract images from each timestamp
 * End-to-End Prediction System: Feature extraction, model building and inference.
 
-# **Data Collection**
+## **Data Collection**
 ![Architecture of Data collection](report_images/Data.png)
 
 Firstly a few youtube playlist were chosen as a dataset to get a decent amount of data 
@@ -28,5 +29,22 @@ images are stored in a storage bucket on google cloud.
 Lastly a script takes all the images and creates a labeled dataset which is uploaded to huggingface.
 
 
-# **End-to-End Prediction System**
+## **End-to-End Prediction System**
 ![Architecture of ML system](report_images/ML.png)
+
+The prediction system uses the data collected by the Data Collection part and periodically uploads the images with the label and timestamps to a huggingface dataset. Thereafter the images are used to train a convolution autoencoder model, which is then used to create vector embeddings of frames in the videos. Both the model and embeddings are thereafter pushed to huggingface, where they are accessed by the inference app consisting of a user firendly Gradio app. 
+
+The Gradio app allows the user to upload their own image which is then encoded by the model and the closest neighbouring image is therafter found and the link to the corresponding Youtube video with a timestamp is presented to the user. 
+
+# Explanation of Parts
+## 3. Inference through Gradio User Interface
+![Gradio App](report_images/Gradio.png)
+
+The [Gradio App](https://huggingface.co/spaces/eybro/image_video_timestamp) utilizes the autoencoder model, encoded images as well as the dataset to allow users to find a Youtube video with a timestamp corresponding to their uploaded image. It can therefore be thought of as the projects inference pipeline. Here is how it works step-by-step:
+1. The user uploads an image or chooses one of the example images.
+2. The image is resized and normalized in the same way as in the training pipeline.
+3. The autoencoder model is used to encode the image and create a vector representation of it.
+4. The image's nearest neighbour is found by searching for the pre encoded image with the smallest euclidian distance to the encoded uplaoded image.
+5. The video title, timestamp and direct url is presented to the user.
+
+# How to Run
