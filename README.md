@@ -44,7 +44,7 @@ The [Gradio App](https://huggingface.co/spaces/eybro/image_video_timestamp) util
 1. The user uploads an image or chooses one of the example images.
 2. The image is resized and normalized in the same way as in the training pipeline.
 3. The autoencoder model is used to encode the image and create a vector representation of it.
-4. The image's nearest neighbour is found by searching for the pre encoded image with the smallest euclidian distance to the encoded uplaoded image.
+4. The image's nearest neighbour is found by searching for the pre encoded image with the smallest euclidean distance to the encoded uplaoded image.
 5. The video title, timestamp and direct url is presented to the user.
 
 # How to Run
