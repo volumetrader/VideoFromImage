@@ -9,6 +9,6 @@ The system can be splitted into two parts:
 * End-to-End Prediction System: Feature extraction, model building and inference.
 
 **Data Collection**
-
+![Architecture of Data collection](report_images/Data.png)
 **End-to-End Prediction System**
 ![Architecture of ML system](report_images/ML.png)
