@@ -1,5 +1,6 @@
 functions-framework==3.*
-google-cloud-storage
-datasets
-huggingface_hub
-torchvision
+google-cloud-storage==2.19.0
+datasets==3.2.0
+huggingface_hub==0.23.0
+torchvision==0.20
+tqdm>=4.66.3
