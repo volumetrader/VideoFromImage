@@ -3,6 +3,9 @@ This project is a complete ML system designed to help users identify the specifi
 Our data consists of images scraped of various vides from Gordon Ramsay TV shows and the service is accessible [here.](https://huggingface.co/spaces/eybro/image_video_timestamp)
 
 This project was done as the final project of the course **ID2223 - Scalable Machine Learning & Deep learning** at KTH.
+
+The dataset containing the scraped images can be found [here.](https://huggingface.co/datasets/eybro/images)
+
 # Overview
 
 The system can be splitted into two parts:
